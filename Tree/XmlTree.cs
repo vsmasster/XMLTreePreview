@@ -23,12 +23,12 @@ namespace Tree {
 
         private static XElement SaveElement(Node<Record> node) {
             XElement result = new XElement("node");
+
             IEnumerable<XAttribute> attList = node.Data.Attributes;
             foreach (XAttribute att in attList)
                 result.SetAttributeValue(att.Name, att.Value);
 
-            foreach (Node<Record> child in node.Children)
-                result.Add(SaveElement(child));
+            result.Add(node.Children.Select(e => SaveElement(e)));
 
             return result;
         }
@@ -50,6 +50,7 @@ namespace Tree {
         public IEnumerable<XAttribute> Attributes{
             get{
                 List<XAttribute> result = new List<XAttribute>();
+  
                 foreach (String key in content.Keys)
                     result.Add(new XAttribute(key, content[key]));
 

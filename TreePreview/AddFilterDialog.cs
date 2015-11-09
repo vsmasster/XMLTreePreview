@@ -76,7 +76,7 @@ namespace TreePreview {
                             res.Add(node);
                     }
                 } else if (type == 2) {
-                    res = nodeSet.OrderBy(c => c.Data[recordKey]).ToList();
+                    return nodeSet.OrderBy(c => c.Data[recordKey]).ToList();
                 } else if (type == 3) {
                     res = nodeSet.OrderBy(c => int.Parse(c.Data[recordKey])).ToList();
                 }

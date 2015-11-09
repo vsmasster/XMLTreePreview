@@ -244,6 +244,7 @@
             this.removeButton.TabIndex = 2;
             this.removeButton.Text = "Usuń";
             this.removeButton.UseVisualStyleBackColor = true;
+            this.removeButton.Click += new System.EventHandler(this.removeButton_Click);
             // 
             // addButton
             // 

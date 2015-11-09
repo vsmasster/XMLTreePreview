@@ -11,7 +11,7 @@ using Tree;
 
 namespace TreePreview {
 	public partial class MainWindow : Form {
-        private Node<Record> root;
+        private Node<Record> root, _root;
         private List<Func<IEnumerable<Node<Record>>, IEnumerable<Node<Record>>>> filters = 
             new List<Func<IEnumerable<Node<Record>>, IEnumerable<Node<Record>>>>();
 		public MainWindow() {
@@ -51,6 +51,7 @@ namespace TreePreview {
             openFileDialog.Filter = "xml files (.xml)|*.xml|All files(*.*)|(*.*)";
             if (openFileDialog.ShowDialog() == DialogResult.OK) {
                 root = XmlTree.Load(openFileDialog.FileName);
+                _root = root;
                 updateTree();
             }
         }
@@ -111,6 +112,19 @@ namespace TreePreview {
         private void saveButton_Click(object sender, EventArgs e) {
             if (saveFileDialog.ShowDialog() == DialogResult.OK) {
                 XmlTree.Save(saveFileDialog.FileName, root);
+            }
+        }
+
+        private void removeButton_Click(object sender, EventArgs e) {
+            if (filterListBox.Items.Count != 0) {
+                int index = filterListBox.SelectedIndex;
+                filterListBox.Items.RemoveAt(index);
+                filters.RemoveAt(index);
+                root = _root;
+                foreach (Func<IEnumerable<Node<Record>>, IEnumerable<Node<Record>>> f in filters)
+                    root = Tree.Tree.Transform(root, f);
+
+                updateTree();
             }
         }
 
